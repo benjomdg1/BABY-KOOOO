@@ -38,12 +38,13 @@ window.addEventListener("DOMContentLoaded", () => {
   // Starry night animation
   function startStarryNight() {
     // Static stars
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 200; i++) {
       const star = document.createElement("div");
       star.classList.add("star");
       star.style.top = Math.random() * 100 + "%";
       star.style.left = Math.random() * 100 + "%";
-      star.style.width = star.style.height = Math.random() * 2 + 1 + "px";
+      const size = Math.random() * 2 + 1;
+      star.style.width = star.style.height = size + "px";
       star.style.animationDuration = (Math.random() * 2 + 1) + "s";
       starsContainer.appendChild(star);
     }
@@ -54,11 +55,13 @@ window.addEventListener("DOMContentLoaded", () => {
       shootingStar.classList.add("shooting-star");
       shootingStar.style.top = Math.random() * 50 + "%";
       shootingStar.style.left = Math.random() * 50 + "%";
+      shootingStar.style.height = Math.random() * 120 + 50 + "px";
+      shootingStar.style.animationDuration = Math.random() * 1 + 0.8 + "s";
       starsContainer.appendChild(shootingStar);
-      setTimeout(() => shootingStar.remove(), 1000);
+      setTimeout(() => shootingStar.remove(), parseFloat(shootingStar.style.animationDuration) * 1000);
     }
 
-    setInterval(createShootingStar, 1500);
+    setInterval(createShootingStar, 1000);
   }
 
   // Petal heart and love letter animation
@@ -99,3 +102,5 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 });
+
+
