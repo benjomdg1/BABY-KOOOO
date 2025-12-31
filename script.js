@@ -5,78 +5,74 @@ window.addEventListener("DOMContentLoaded", () => {
   const feedback = document.getElementById("feedback");
   const heart = document.querySelector(".petal-heart");
   const paper = document.getElementById("lovePaper");
-  const container = document.querySelector(".container");
 
-  container.style.display = "none";
+  // Hide main container initially
+  document.querySelector(".container").style.display = "none";
 
-  // ✅ CORRECT DATE (August 10, 2025)
-  const CORRECT_DAY = 10;
-  const CORRECT_MONTH = 8; // August
-  const CORRECT_YEAR = 2025;
+  // The correct answer
+  const correctAnswer = "August 10, 2025";
 
-  const months = {
-    january: 1, jan: 1,
-    february: 2, feb: 2,
-    march: 3, mar: 3,
-    april: 4, apr: 4,
-    may: 5,
-    june: 6, jun: 6,
-    july: 7, jul: 7,
-    august: 8, aug: 8,
-    september: 9, sep: 9,
-    october: 10, oct: 10,
-    november: 11, nov: 11,
-    december: 12, dec: 12
-  };
-
+  // Handle answer submission
   submitBtn.addEventListener("click", () => {
-    const raw = answerInput.value
-      .toLowerCase()
-      .replace(/,/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+    const userAnswer = answerInput.value.trim();
 
-    let day, month, year;
-
-    // FORMAT: August 10 2025 / Aug 10 2025
-    const wordMatch = raw.match(
-      /([a-z]+)\s(\d{1,2})\s(\d{4})/
-    );
-
-    // FORMAT: 8/10/2025 or 08/10/2025
-    const slashMatch = raw.match(
-      /(\d{1,2})\/(\d{1,2})\/(\d{4})/
-    );
-
-    // FORMAT: 2025-08-10
-    const dashMatch = raw.match(
-      /(\d{4})-(\d{1,2})-(\d{1,2})/
-    );
-
-    if (wordMatch && months[wordMatch[1]]) {
-      month = months[wordMatch[1]];
-      day = parseInt(wordMatch[2], 10);
-      year = parseInt(wordMatch[3], 10);
-    } 
-    else if (slashMatch) {
-      month = parseInt(slashMatch[1], 10);
-      day = parseInt(slashMatch[2], 10);
-      year = parseInt(slashMatch[3], 10);
-    } 
-    else if (dashMatch) {
-      year = parseInt(dashMatch[1], 10);
-      month = parseInt(dashMatch[2], 10);
-      day = parseInt(dashMatch[3], 10);
-    }
-
-    const isCorrect =
-      day === CORRECT_DAY &&
-      month === CORRECT_MONTH &&
-      year === CORRECT_YEAR;
-
-    if (isCorrect) {
+    if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
       feedback.textContent = "Correct ❤️";
       feedback.style.color = "green";
 
+      // Change background to starry night
+      document.body.style.background = "url('https://i.ibb.co/YRkWwM9/starry-night.jpg') no-repeat center center fixed";
+      document.body.style.backgroundSize = "cover";
+
+      // Close modal after a short delay
       setTimeout(() => {
-        modal.style.d
+        modal.style.display = "none";
+        document.querySelector(".container").style.display = "block";
+        startAnimation(); // trigger heart & letter animation
+      }, 1000);
+    } else {
+      feedback.textContent = "Eeeeengk, very wrong 😝";
+      feedback.style.color = "crimson";
+    }
+  });
+
+  // Function that runs the heart animation and reveals the letter
+  function startAnimation() {
+    const petalCount = 40;
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement("div");
+      petal.classList.add("petal");
+
+      const angle = (i / petalCount) * Math.PI * 2;
+      const x = 16 * Math.pow(Math.sin(angle), 3);
+      const y = -(
+        13 * Math.cos(angle) -
+        5 * Math.cos(2 * angle) -
+        2 * Math.cos(3 * angle) -
+        Math.cos(4 * angle)
+      );
+
+      petal.style.left = 50 + x * 8 + "%";
+      petal.style.top = 50 + y * 8 + "%";
+      petal.style.animationDelay = `${i * 0.05}s`;
+      heart.appendChild(petal);
+    }
+
+    // Fade out petals
+    setTimeout(() => {
+      document.querySelectorAll(".petal").forEach(p => p.classList.add("fade-out"));
+    }, 4000);
+
+    // Reveal love letter
+    setTimeout(() => {
+      paper.classList.add("revealed");
+      document.querySelector(".love-letter").innerHTML = `
+        <p>As this 2025 end, and a new year unfolds, gusto ko sanang sabihin sayo babe kung gaano ako ka-grateful na dumating ka sa buhay ko.</p>
+        <p>Halos second semester kalang dumating this year, pero kinumpleto mo yung taon ko. Para ngang lahat ng panahon na naghi-heal ako, ikaw yung naging sagot eh. You filled the empty spaces in my heart with so much happiness and warmth. You made my year feel whole in ways na hindi ko inaasahan.</p>
+        <p>Sobrang proud ako sayo, sa lahat ng na-achieve mo this year, sa lahat ng na-achieve even before pa ko dumating. Sa mga recognitions mo sa trabaho, sa silent battles mo na hinarap mong mag-isa, hanggang sa parcels mong walang katapusan wahahahaha. I admire everything about you babe. Your strength, determination, lalong lalo na yung kind heart mong ini-inspire ako araw-araw.</p>
+        <p>And as we enter 2026, I pray with all my heart na maging fruitful at abundant ang bagong taon na to para satin. I pray na marami pa tayong ma-achieve, ma-tick sa bucketlist, blessings na matanggap, and I hope na we also get the chance na mai-bless din yung iba. Pero most importantly, I wish you and your family good health and prosperous life ahead. And I pray that whatever new year brings, haharapin natin yun nang magkasama.</p>
+        <p>Happy New Year Elaine. Here's to more memories, growth, and love with you. I love you, baby. I love you forever and everrrrr.</p>
+      `;
+    }, 2000);
+  }
+});
