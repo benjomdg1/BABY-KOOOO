@@ -1,3 +1,4 @@
+console.log("script loaded");
 window.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("questionModal");
   const submitBtn = document.getElementById("submitAnswer");
@@ -75,3 +76,4 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 });
+
