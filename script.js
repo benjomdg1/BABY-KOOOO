@@ -16,7 +16,12 @@ window.addEventListener("DOMContentLoaded", () => {
   ];
 
   submitBtn.addEventListener("click", () => {
-    const answer = answerInput.value.trim().toLowerCase();
+    const answer = answerInput.value
+      .toLowerCase()
+      .replace(/,/g, "")      // remove commas
+      .replace(/\s+/g, " ")   // normalize spaces
+      .trim();
+
 
     if (correctAnswers.includes(answer)) {
       feedback.textContent = "Correct ❤️";
@@ -77,4 +82,5 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
 
