@@ -8,7 +8,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const paper = document.getElementById("lovePaper");
   const starsContainer = document.getElementById("starsContainer");
 
-  // Hide main container initially
   document.querySelector(".container").style.display = "none";
 
   const correctAnswer = "August 10, 2025";
@@ -21,7 +20,6 @@ window.addEventListener("DOMContentLoaded", () => {
       feedback.textContent = "Correct ❤️";
       feedback.style.color = "green";
 
-      // Close modal and show container
       setTimeout(() => {
         modal.style.display = "none";
         document.querySelector(".container").style.display = "block";
@@ -31,13 +29,11 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
       feedback.textContent = "Eeeeengk, very wrong 😝";
       feedback.style.color = "crimson";
-      answerInput.value = userAnswer; // retain input
+      answerInput.value = userAnswer;
     }
   });
 
-  // Starry night animation
   function startStarryNight() {
-    // Static stars
     for (let i = 0; i < 200; i++) {
       const star = document.createElement("div");
       star.classList.add("star");
@@ -49,7 +45,6 @@ window.addEventListener("DOMContentLoaded", () => {
       starsContainer.appendChild(star);
     }
 
-    // Shooting stars
     function createShootingStar() {
       const shootingStar = document.createElement("div");
       shootingStar.classList.add("shooting-star");
@@ -64,7 +59,6 @@ window.addEventListener("DOMContentLoaded", () => {
     setInterval(createShootingStar, 1000);
   }
 
-  // Petal heart and love letter animation
   function startAnimation() {
     const petalCount = 40;
     for (let i = 0; i < petalCount; i++) {
@@ -102,5 +96,4 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 });
-
 
