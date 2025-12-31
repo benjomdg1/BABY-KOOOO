@@ -7,23 +7,26 @@ window.addEventListener("DOMContentLoaded", () => {
   const paper = document.getElementById("lovePaper");
   const container = document.querySelector(".container");
 
+  // Hide main content at start
   container.style.display = "none";
 
-  const correctAnswers = [
-    "August 10, 2025",
-    "aug 10 2025",
-    "08/10/2025"
-  ];
+  // ✅ SET THE CORRECT DATE HERE (YYYY-MM-DD)
+  const correctDate = new Date("2025-08-10");
 
   submitBtn.addEventListener("click", () => {
-    const answer = answerInput.value
-      .toLowerCase()
-      .replace(/,/g, "")      // remove commas
-      .replace(/\s+/g, " ")   // normalize spaces
-      .trim();
+    const input = answerInput.value.trim();
 
+    // Try to parse user input as a date
+    const userDate = new Date(input);
 
-    if (correctAnswers.includes(answer)) {
+    // Validate date safely
+    const isCorrect =
+      !isNaN(userDate.getTime()) &&
+      userDate.getFullYear() === correctDate.getFullYear() &&
+      userDate.getMonth() === correctDate.getMonth() &&
+      userDate.getDate() === correctDate.getDate();
+
+    if (isCorrect) {
       feedback.textContent = "Correct ❤️";
       feedback.style.color = "green";
 
@@ -40,6 +43,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // 🌸 Heart petal animation
   function startHeartAnimation() {
     const petalCount = 40;
 
@@ -59,19 +63,24 @@ window.addEventListener("DOMContentLoaded", () => {
       petal.style.left = 50 + x * 8 + "%";
       petal.style.top = 50 + y * 8 + "%";
       petal.style.animationDelay = `${i * 0.05}s`;
+
       heart.appendChild(petal);
     }
 
+    // Fade petals after bloom
     setTimeout(() => {
-      document.querySelectorAll(".petal")
+      document
+        .querySelectorAll(".petal")
         .forEach(p => p.classList.add("fade-out"));
     }, 4000);
 
+    // Reveal letter
     setTimeout(() => {
       paper.classList.add("revealed");
     }, 2000);
   }
 
+  // 🌠 Falling stars animation
   function startStars() {
     for (let i = 0; i < 30; i++) {
       const star = document.createElement("div");
@@ -82,5 +91,3 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
-
-
