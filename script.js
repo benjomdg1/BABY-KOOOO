@@ -5,33 +5,39 @@ window.addEventListener("DOMContentLoaded", () => {
   const feedback = document.getElementById("feedback");
   const heart = document.querySelector(".petal-heart");
   const paper = document.getElementById("lovePaper");
+  const container = document.querySelector(".container");
 
-  // Hide everything except the modal initially
-  document.querySelector(".container").style.display = "none";
+  container.style.display = "none";
 
-  // Handle answer submission
+  const correctAnswers = [
+    "october 15, 2025",
+    "oct 15 2025",
+    "10/15/2025"
+  ];
+
   submitBtn.addEventListener("click", () => {
     const answer = answerInput.value.trim().toLowerCase();
 
-    if (answer === "mahal na mahal") {
+    if (correctAnswers.includes(answer)) {
       feedback.textContent = "Correct ❤️";
       feedback.style.color = "green";
 
-      // Close the modal after a delay
       setTimeout(() => {
         modal.style.display = "none";
-        document.querySelector(".container").style.display = "block";
-        startAnimation(); // trigger petals and letter animation
-      }, 1000);
+        document.body.classList.add("starry");
+        container.style.display = "block";
+        startStars();
+        startHeartAnimation();
+      }, 1200);
     } else {
       feedback.textContent = "Eeeeengk, very wrong 😝";
       feedback.style.color = "crimson";
     }
   });
 
-  // Function that runs the heart animation
-  function startAnimation() {
+  function startHeartAnimation() {
     const petalCount = 40;
+
     for (let i = 0; i < petalCount; i++) {
       const petal = document.createElement("div");
       petal.classList.add("petal");
@@ -51,14 +57,23 @@ window.addEventListener("DOMContentLoaded", () => {
       heart.appendChild(petal);
     }
 
-    // Fade out petals after blooming
     setTimeout(() => {
-      document.querySelectorAll(".petal").forEach(p => p.classList.add("fade-out"));
+      document.querySelectorAll(".petal")
+        .forEach(p => p.classList.add("fade-out"));
     }, 4000);
 
-    // Reveal the love letter
     setTimeout(() => {
       paper.classList.add("revealed");
     }, 2000);
+  }
+
+  function startStars() {
+    for (let i = 0; i < 30; i++) {
+      const star = document.createElement("div");
+      star.classList.add("shooting-star");
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.animationDelay = Math.random() * 5 + "s";
+      document.body.appendChild(star);
+    }
   }
 });
