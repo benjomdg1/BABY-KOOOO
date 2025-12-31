@@ -6,6 +6,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const feedback = document.getElementById("feedback");
   const heart = document.querySelector(".petal-heart");
   const paper = document.getElementById("lovePaper");
+  const starsContainer = document.getElementById("starsContainer");
 
   // Hide main container initially
   document.querySelector(".container").style.display = "none";
@@ -13,32 +14,54 @@ window.addEventListener("DOMContentLoaded", () => {
   const correctAnswer = "August 10, 2025";
 
   submitBtn.addEventListener("click", (e) => {
-    e.preventDefault(); // Prevent page refresh
-
+    e.preventDefault();
     const userAnswer = answerInput.value.trim();
 
     if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
       feedback.textContent = "Correct ❤️";
       feedback.style.color = "green";
 
-      // Change background to starry night
-      document.body.style.background = "url('https://i.ibb.co/YRkWwM9/starry-night.jpg') no-repeat center center fixed";
-      document.body.style.backgroundSize = "cover";
-
       // Close modal and show container
       setTimeout(() => {
         modal.style.display = "none";
         document.querySelector(".container").style.display = "block";
+        startStarryNight();
         startAnimation();
-      }, 1000);
+      }, 500);
     } else {
       feedback.textContent = "Eeeeengk, very wrong 😝";
       feedback.style.color = "crimson";
-      // Keep the previous answer in the input
-      answerInput.value = userAnswer;
+      answerInput.value = userAnswer; // retain input
     }
   });
 
+  // Starry night animation
+  function startStarryNight() {
+    // Static stars
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = Math.random() * 100 + "%";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.width = star.style.height = Math.random() * 2 + 1 + "px";
+      star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+      starsContainer.appendChild(star);
+    }
+
+    // Shooting stars
+    function createShootingStar() {
+      const shootingStar = document.createElement("div");
+      shootingStar.classList.add("shooting-star");
+      shootingStar.style.top = Math.random() * 50 + "%";
+      shootingStar.style.left = Math.random() * 50 + "%";
+      starsContainer.appendChild(shootingStar);
+      setTimeout(() => shootingStar.remove(), 1000);
+    }
+
+    setInterval(createShootingStar, 1500);
+  }
+
+  // Petal heart and love letter animation
   function startAnimation() {
     const petalCount = 40;
     for (let i = 0; i < petalCount; i++) {
@@ -76,4 +99,3 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 });
-
