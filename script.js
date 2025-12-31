@@ -33,6 +33,8 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
       feedback.textContent = "Eeeeengk, very wrong 😝";
       feedback.style.color = "crimson";
+      // Keep the previous answer in the input
+      answerInput.value = userAnswer;
     }
   });
 
