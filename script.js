@@ -10,9 +10,9 @@ window.addEventListener("DOMContentLoaded", () => {
   container.style.display = "none";
 
   const correctAnswers = [
-    "october 15, 2025",
-    "oct 15 2025",
-    "10/15/2025"
+    "August 10, 2025",
+    "aug 10 2025",
+    "08/10/2025"
   ];
 
   submitBtn.addEventListener("click", () => {
@@ -77,3 +77,4 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
