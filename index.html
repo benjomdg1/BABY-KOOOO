@@ -1,34 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Love Letter 🌹</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <!-- ✨ Starry Night Background -->
-  <div id="starsContainer"></div>
+window.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("questionModal");
+  const submitBtn = document.getElementById("submitAnswer");
+  const answerInput = document.getElementById("answerInput");
+  const feedback = document.getElementById("feedback");
+  const heart = document.querySelector(".petal-heart");
+  const paper = document.getElementById("lovePaper");
+  const starsContainer = document.getElementById("starsContainer");
 
-  <!-- ✨ Modal Box ✨ -->
-  <div id="questionModal" class="modal">
-    <div class="modal-content">
-      <h2>Before you open the letter...</h2>
-      <p><strong>Question:</strong> When was the day when you finally said "I love you" to me?</p>
-      <input type="text" id="answerInput" placeholder="Your answer..." />
-      <button id="submitAnswer">Submit</button>
-      <p id="feedback" class="feedback"></p>
-    </div>
-  </div>
+  // Hide main container initially
+  document.querySelector(".container").style.display = "none";
 
-  <!-- 🌹 Main Content -->
-  <div class="container">
-    <div class="petal-heart"></div>
-    <div class="paper" id="lovePaper">
-      <div class="love-letter"></div>
-    </div>
-  </div>
+  const correctAnswer = "August 10, 2025";
 
-  <script src="script.js"></script>
-</body>
-</html>
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const userAnswer = answerInput.value.trim();
+
+    if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+      feedback.textContent = "Correct ❤️";
+      feedback.style.color = "green";
+
+      // Close modal and show container
+      setTimeout(() => {
+        modal.style.display = "none";
+        document.querySelector(".container").style.display = "block";
+        startStarryNight();
+        startAnimation();
+      }, 500);
+    } else {
+      feedback.textContent = "Eeeeengk, very wrong 😝";
+      feedback.style.color = "crimson";
+      answerInput.value = userAnswer; // retain input
+    }
+  });
+
+  // Starry night animation
+  function startStarryNight() {
+    // Static stars
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = Math.random() * 100 + "%";
+      star.style.left = Math.random() * 100 + "%";
+      const size = Math.random() * 2 + 1;
+      star.style.width = star.style.height = size + "px";
+      star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+      starsContainer.appendChild(star);
+    }
+
+    // Shooting stars
+    function createShootingStar() {
+      const shootingStar = document.createElement("div");
+      shootingStar.classList.add("shooting-star");
+      shootingStar.style.top = Math.random() * 50 + "%";
+      shootingStar.style.left = Math.random() * 50 + "%";
+      shootingStar.style.height = Math.random() * 120 + 50 + "px";
+      shootingStar.style.animationDuration = Math.random() * 1 + 0.8 + "s";
+      starsContainer.appendChild(shootingStar);
+      setTimeout(() => shootingStar.remove(), parseFloat(shootingStar.style.animationDuration) * 1000);
+    }
+
+    setInterval(createShootingStar, 1000);
+  }
+
+  // Petal heart and love letter animation
+  function startAnimation() {
+    const petalCount = 40;
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement("div");
+      petal.classList.add("petal");
+
+      const angle = (i / petalCount) * Math.PI * 2;
+      const x = 16 * Math.pow(Math.sin(angle), 3);
+      const y = -(
+        13 * Math.cos(angle) -
+        5 * Math.cos(2 * angle) -
+        2 * Math.cos(3 * angle) -
+        Math.cos(4 * angle)
+      );
+
+      petal.style.left = 50 + x * 8 + "%";
+      petal.style.top = 50 + y * 8 + "%";
+      petal.style.animationDelay = `${i * 0.05}s`;
+      heart.appendChild(petal);
+    }
+
+    setTimeout(() => {
+      document.querySelectorAll(".petal").forEach(p => p.classList.add("fade-out"));
+    }, 4000);
+
+    setTimeout(() => {
+      paper.classList.add("revealed");
+      document.querySelector(".love-letter").innerHTML = `
+        <p>As this 2025 end, and a new year unfolds, gusto ko sanang sabihin sayo babe kung gaano ako ka-grateful na dumating ka sa buhay ko.</p>
+        <p>Halos second semester kalang dumating this year, pero kinumpleto mo yung taon ko. Para ngang lahat ng panahon na naghi-heal ako, ikaw yung naging sagot eh. You filled the empty spaces in my heart with so much happiness and warmth. You made my year feel whole in ways na hindi ko inaasahan.</p>
+        <p>Sobrang proud ako sayo, sa lahat ng na-achieve mo this year, sa lahat ng na-achieve even before pa ko dumating. Sa mga recognitions mo sa trabaho, sa silent battles mo na hinarap mong mag-isa, hanggang sa parcels mong walang katapusan wahahahaha. I admire everything about you babe. Your strength, determination, lalong lalo na yung kind heart mong ini-inspire ako araw-araw.</p>
+        <p>And as we enter 2026, I pray with all my heart na maging fruitful at abundant ang bagong taon na to para satin. I pray na marami pa tayong ma-achieve, ma-tick sa bucketlist, blessings na matanggap, and I hope na we also get the chance na mai-bless din yung iba. Pero most importantly, I wish you and your family good health and prosperous life ahead. And I pray that whatever new year brings, haharapin natin yun nang magkasama.</p>
+        <p>Happy New Year Elaine. Here's to more memories, growth, and love with you. I love you, baby. I love you forever and everrrrr.</p>
+      `;
+    }, 2000);
+  }
+});
