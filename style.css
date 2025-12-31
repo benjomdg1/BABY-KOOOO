@@ -11,15 +11,18 @@ body {
   font-family: "Shadows Into Light", cursive;
 }
 
-/* Main container */
+body.starry {
+  background: radial-gradient(circle at top, #0b1d3a 0%, #020111 80%);
+}
+
+/* MAIN CONTAINER */
 .container {
   position: relative;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* Petal heart */
+/* HEART */
 .petal-heart {
   position: absolute;
   top: 50%;
@@ -27,130 +30,73 @@ body {
   width: 350px;
   height: 350px;
   transform: translate(-50%, -50%);
-  pointer-events: none;
   z-index: 2;
 }
 
-/* Each petal */
 .petal {
   position: absolute;
   width: 24px;
   height: 28px;
-  background: radial-gradient(circle at 30% 30%, #ff7e9e 0%, #c00040 80%);
+  background: radial-gradient(circle at 30% 30%, #ff7e9e, #c00040);
   border-radius: 50% 50% 0 0;
-  transform-origin: bottom center;
   opacity: 0;
   animation: bloom 2s ease forwards;
 }
 
 @keyframes bloom {
-  0% {
-    transform: scale(0.2) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.1) rotate(10deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
+  0% { opacity: 0; transform: scale(0.2); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-/* After heart blooms, fade out petals */
 .petal.fade-out {
   animation: fadeOut 2.5s ease forwards;
 }
 
 @keyframes fadeOut {
-  to {
-    opacity: 0;
-    transform: scale(0.6) translateY(50px);
-  }
+  to { opacity: 0; transform: translateY(50px); }
 }
 
-/* Paper reveal */
+/* PAPER */
 .paper {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  background: url('https://www.transparenttextures.com/patterns/aged-paper.png'), #fdf3d1;
+  transform: translate(-50%, -50%);
+  background: #fdf3d1;
   border: 8px solid #a9744f;
-  border-radius: 10px;
-  box-shadow: 0 0 50px rgba(0,0,0,0.5);
   padding: 40px;
-  box-sizing: border-box;
-  width: 0;
-  height: auto;
-  opacity: 0;
-  overflow: hidden; /* <— keeps text inside while paper expands */
-  z-index: 3;
-  animation: unroll 2.5s ease forwards;
-  animation-delay: 5.5s;
+  width: 80vw;
   max-width: 600px;
-  text-align: left;
+  opacity: 0;
+  z-index: 3;
 }
 
-@keyframes unroll {
-  0% {
-    width: 0;
-    opacity: 0;
-  }
-  50% {
-    width: 80vw;
-    opacity: 1;
-  }
-  100% {
-    width: 80vw;
-    opacity: 1;
-  }
+.paper.revealed {
+  opacity: 1;
+  transition: opacity 2s ease;
 }
 
 .love-letter {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 2s ease 7s, transform 2s ease 7s;
   color: #5c3b1e;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  max-width: 80%;
-  margin: 0 auto;
-}
-
-.paper.revealed .love-letter {
-  opacity: 1;
-  transform: translateY(0);
+  line-height: 1.6;
 }
 
 .love-letter h1 {
-  font-size: 2.4rem;
   text-align: center;
-  margin-bottom: 20px;
+  font-size: 2.4rem;
 }
 
 .signature {
-  margin-top: 40px;
   text-align: right;
+  margin-top: 40px;
   font-size: 1.3rem;
-  color: #7c4a28;
 }
 
-/* Small screens */
-@media (max-width: 600px) {
-  .paper {
-    padding: 25px;
-  }
-}
-/* ===== MODAL STYLES ===== */
+/* MODAL */
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
+  inset: 0;
+  background: rgba(0,0,0,0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,51 +105,44 @@ body {
 
 .modal-content {
   background: #fff7e6;
-  border: 4px solid #a9744f;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.5);
   text-align: center;
-  padding: 30px 40px;
-  width: 90%;
   max-width: 400px;
-  font-family: "Shadows Into Light", cursive;
-}
-
-.modal-content h2 {
-  margin-top: 0;
-  color: #5c3b1e;
 }
 
 .modal-content input {
   width: 80%;
   padding: 10px;
-  margin-top: 15px;
-  border: 2px solid #a9744f;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-family: inherit;
+  margin-top: 10px;
 }
 
 .modal-content button {
   margin-top: 15px;
+  padding: 10px 20px;
   background: #a9744f;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  font-family: inherit;
-  transition: 0.3s;
-}
-
-.modal-content button:hover {
-  background: #8c5d3e;
 }
 
 .feedback {
   margin-top: 10px;
-  color: crimson;
-  font-size: 1rem;
 }
 
+/* FALLING STARS */
+.shooting-star {
+  position: fixed;
+  top: -10px;
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(white, transparent);
+  animation: shoot 3s linear infinite;
+  z-index: 1;
+}
+
+@keyframes shoot {
+  from { transform: translateY(0) translateX(0); opacity: 1; }
+  to { transform: translateY(120vh) translateX(-40vw); opacity: 0; }
+}
