@@ -7,87 +7,76 @@ window.addEventListener("DOMContentLoaded", () => {
   const paper = document.getElementById("lovePaper");
   const container = document.querySelector(".container");
 
-  // Hide main content at start
   container.style.display = "none";
 
-  // ✅ SET THE CORRECT DATE HERE (YYYY-MM-DD)
-  const correctDate = new Date("2025-08-10");
+  // ✅ CORRECT DATE (August 10, 2025)
+  const CORRECT_DAY = 10;
+  const CORRECT_MONTH = 8; // August
+  const CORRECT_YEAR = 2025;
+
+  const months = {
+    january: 1, jan: 1,
+    february: 2, feb: 2,
+    march: 3, mar: 3,
+    april: 4, apr: 4,
+    may: 5,
+    june: 6, jun: 6,
+    july: 7, jul: 7,
+    august: 8, aug: 8,
+    september: 9, sep: 9,
+    october: 10, oct: 10,
+    november: 11, nov: 11,
+    december: 12, dec: 12
+  };
 
   submitBtn.addEventListener("click", () => {
-    const input = answerInput.value.trim();
+    const raw = answerInput.value
+      .toLowerCase()
+      .replace(/,/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
 
-    // Try to parse user input as a date
-    const userDate = new Date(input);
+    let day, month, year;
 
-    // Validate date safely
+    // FORMAT: August 10 2025 / Aug 10 2025
+    const wordMatch = raw.match(
+      /([a-z]+)\s(\d{1,2})\s(\d{4})/
+    );
+
+    // FORMAT: 8/10/2025 or 08/10/2025
+    const slashMatch = raw.match(
+      /(\d{1,2})\/(\d{1,2})\/(\d{4})/
+    );
+
+    // FORMAT: 2025-08-10
+    const dashMatch = raw.match(
+      /(\d{4})-(\d{1,2})-(\d{1,2})/
+    );
+
+    if (wordMatch && months[wordMatch[1]]) {
+      month = months[wordMatch[1]];
+      day = parseInt(wordMatch[2], 10);
+      year = parseInt(wordMatch[3], 10);
+    } 
+    else if (slashMatch) {
+      month = parseInt(slashMatch[1], 10);
+      day = parseInt(slashMatch[2], 10);
+      year = parseInt(slashMatch[3], 10);
+    } 
+    else if (dashMatch) {
+      year = parseInt(dashMatch[1], 10);
+      month = parseInt(dashMatch[2], 10);
+      day = parseInt(dashMatch[3], 10);
+    }
+
     const isCorrect =
-      !isNaN(userDate.getTime()) &&
-      userDate.getFullYear() === correctDate.getFullYear() &&
-      userDate.getMonth() === correctDate.getMonth() &&
-      userDate.getDate() === correctDate.getDate();
+      day === CORRECT_DAY &&
+      month === CORRECT_MONTH &&
+      year === CORRECT_YEAR;
 
     if (isCorrect) {
       feedback.textContent = "Correct ❤️";
       feedback.style.color = "green";
 
       setTimeout(() => {
-        modal.style.display = "none";
-        document.body.classList.add("starry");
-        container.style.display = "block";
-        startStars();
-        startHeartAnimation();
-      }, 1200);
-    } else {
-      feedback.textContent = "Eeeeengk, very wrong 😝";
-      feedback.style.color = "crimson";
-    }
-  });
-
-  // 🌸 Heart petal animation
-  function startHeartAnimation() {
-    const petalCount = 40;
-
-    for (let i = 0; i < petalCount; i++) {
-      const petal = document.createElement("div");
-      petal.classList.add("petal");
-
-      const angle = (i / petalCount) * Math.PI * 2;
-      const x = 16 * Math.pow(Math.sin(angle), 3);
-      const y = -(
-        13 * Math.cos(angle) -
-        5 * Math.cos(2 * angle) -
-        2 * Math.cos(3 * angle) -
-        Math.cos(4 * angle)
-      );
-
-      petal.style.left = 50 + x * 8 + "%";
-      petal.style.top = 50 + y * 8 + "%";
-      petal.style.animationDelay = `${i * 0.05}s`;
-
-      heart.appendChild(petal);
-    }
-
-    // Fade petals after bloom
-    setTimeout(() => {
-      document
-        .querySelectorAll(".petal")
-        .forEach(p => p.classList.add("fade-out"));
-    }, 4000);
-
-    // Reveal letter
-    setTimeout(() => {
-      paper.classList.add("revealed");
-    }, 2000);
-  }
-
-  // 🌠 Falling stars animation
-  function startStars() {
-    for (let i = 0; i < 30; i++) {
-      const star = document.createElement("div");
-      star.classList.add("shooting-star");
-      star.style.left = Math.random() * 100 + "vw";
-      star.style.animationDelay = Math.random() * 5 + "s";
-      document.body.appendChild(star);
-    }
-  }
-});
+        modal.style.d
