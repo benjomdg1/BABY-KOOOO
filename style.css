@@ -3,26 +3,64 @@
 body {
   margin: 0;
   height: 100vh;
-  background: radial-gradient(circle at center, #1a0000 0%, #0a0000 100%);
+  font-family: "Shadows Into Light", cursive;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Shadows Into Light", cursive;
 }
 
-body.starry {
-  background: radial-gradient(circle at top, #0b1d3a 0%, #020111 80%);
+/* Starry Background */
+#starsContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  background: radial-gradient(ellipse at bottom, #000011 0%, #000033 100%);
 }
 
-/* MAIN CONTAINER */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from {opacity: 0.3;}
+  to {opacity: 1;}
+}
+
+.shooting-star {
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(white, rgba(255,255,255,0));
+  transform: rotate(-45deg);
+  animation: shoot 1s linear forwards;
+}
+
+@keyframes shoot {
+  from {transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1;}
+  to {transform: translateX(500px) translateY(500px) rotate(-45deg); opacity: 0;}
+}
+
+/* Main container */
 .container {
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  z-index: 2;
 }
 
-/* HEART */
+/* Petal heart */
 .petal-heart {
   position: absolute;
   top: 50%;
@@ -30,22 +68,26 @@ body.starry {
   width: 350px;
   height: 350px;
   transform: translate(-50%, -50%);
+  pointer-events: none;
   z-index: 2;
 }
 
+/* Each petal */
 .petal {
   position: absolute;
   width: 24px;
   height: 28px;
-  background: radial-gradient(circle at 30% 30%, #ff7e9e, #c00040);
+  background: radial-gradient(circle at 30% 30%, #ff7e9e 0%, #c00040 80%);
   border-radius: 50% 50% 0 0;
+  transform-origin: bottom center;
   opacity: 0;
   animation: bloom 2s ease forwards;
 }
 
 @keyframes bloom {
-  0% { opacity: 0; transform: scale(0.2); }
-  100% { opacity: 1; transform: scale(1); }
+  0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1.1) rotate(10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 .petal.fade-out {
@@ -53,50 +95,63 @@ body.starry {
 }
 
 @keyframes fadeOut {
-  to { opacity: 0; transform: translateY(50px); }
+  to { opacity: 0; transform: scale(0.6) translateY(50px); }
 }
 
-/* PAPER */
+/* Paper reveal */
 .paper {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fdf3d1;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: url('https://www.transparenttextures.com/patterns/aged-paper.png'), #fdf3d1;
   border: 8px solid #a9744f;
+  border-radius: 10px;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
   padding: 40px;
-  width: 80vw;
-  max-width: 600px;
+  width: 0;
+  height: auto;
   opacity: 0;
+  overflow: hidden;
   z-index: 3;
+  animation: unroll 2.5s ease forwards;
+  animation-delay: 5.5s;
+  max-width: 600px;
+  text-align: left;
 }
 
-.paper.revealed {
-  opacity: 1;
-  transition: opacity 2s ease;
+@keyframes unroll {
+  0% { width: 0; opacity: 0; }
+  50% { width: 80vw; opacity: 1; }
+  100% { width: 80vw; opacity: 1; }
 }
 
 .love-letter {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 2s ease 7s, transform 2s ease 7s;
   color: #5c3b1e;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-width: 80%;
+  margin: 0 auto;
 }
 
-.love-letter h1 {
-  text-align: center;
-  font-size: 2.4rem;
+.paper.revealed .love-letter {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.signature {
-  text-align: right;
-  margin-top: 40px;
-  font-size: 1.3rem;
-}
+.love-letter h1 { font-size: 2.4rem; text-align: center; margin-bottom: 20px; }
 
-/* MODAL */
+/* Modal */
 .modal {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,44 +160,36 @@ body.starry {
 
 .modal-content {
   background: #fff7e6;
-  padding: 30px;
+  border: 4px solid #a9744f;
   border-radius: 10px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
   text-align: center;
+  padding: 30px 40px;
+  width: 90%;
   max-width: 400px;
+  font-family: "Shadows Into Light", cursive;
 }
 
 .modal-content input {
   width: 80%;
   padding: 10px;
-  margin-top: 10px;
+  margin-top: 15px;
+  border: 2px solid #a9744f;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
 .modal-content button {
   margin-top: 15px;
-  padding: 10px 20px;
   background: #a9744f;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
-.feedback {
-  margin-top: 10px;
-}
+.modal-content button:hover { background: #8c5d3e; }
 
-/* FALLING STARS */
-.shooting-star {
-  position: fixed;
-  top: -10px;
-  width: 2px;
-  height: 80px;
-  background: linear-gradient(white, transparent);
-  animation: shoot 3s linear infinite;
-  z-index: 1;
-}
-
-@keyframes shoot {
-  from { transform: translateY(0) translateX(0); opacity: 1; }
-  to { transform: translateY(120vh) translateX(-40vw); opacity: 0; }
-}
+.feedback { margin-top: 10px; font-size: 1rem; color: crimson; }
