@@ -9,11 +9,11 @@ window.addEventListener("DOMContentLoaded", () => {
   // Hide main container initially
   document.querySelector(".container").style.display = "none";
 
-  // The correct answer
   const correctAnswer = "August 10, 2025";
 
-  // Handle answer submission
-  submitBtn.addEventListener("click", () => {
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault(); // Prevent page refresh
+
     const userAnswer = answerInput.value.trim();
 
     if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
@@ -24,11 +24,11 @@ window.addEventListener("DOMContentLoaded", () => {
       document.body.style.background = "url('https://i.ibb.co/YRkWwM9/starry-night.jpg') no-repeat center center fixed";
       document.body.style.backgroundSize = "cover";
 
-      // Close modal after a short delay
+      // Close modal and show container
       setTimeout(() => {
         modal.style.display = "none";
         document.querySelector(".container").style.display = "block";
-        startAnimation(); // trigger heart & letter animation
+        startAnimation();
       }, 1000);
     } else {
       feedback.textContent = "Eeeeengk, very wrong 😝";
@@ -36,7 +36,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Function that runs the heart animation and reveals the letter
   function startAnimation() {
     const petalCount = 40;
     for (let i = 0; i < petalCount; i++) {
@@ -58,12 +57,10 @@ window.addEventListener("DOMContentLoaded", () => {
       heart.appendChild(petal);
     }
 
-    // Fade out petals
     setTimeout(() => {
       document.querySelectorAll(".petal").forEach(p => p.classList.add("fade-out"));
     }, 4000);
 
-    // Reveal love letter
     setTimeout(() => {
       paper.classList.add("revealed");
       document.querySelector(".love-letter").innerHTML = `
